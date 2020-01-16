@@ -1,7 +1,7 @@
 ---
 title: "Current Projects"
 date: 2020-01-16T12:00:14-06:00
-draft: true
+draft: false
 ---
 
 ### How To Understand Things
