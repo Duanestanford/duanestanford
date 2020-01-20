@@ -1,6 +1,12 @@
 const SftpClient = require('ssh2-sftp-client');
 const sftp = new SftpClient();
 
+const util = require('util');
+const glob = util.promisify(require('glob'));
+const upath = require('upath');
+const fs = require('fs');
+
+
 let itemsToUpload = [];
 
 sftp.connect({
@@ -12,8 +18,9 @@ sftp.connect({
 
 .then(() => scanLocalFiles())
 .then(items => {
-  if (!items || items.length < 1) throw new Error('Nothing to Upload');
+  if (!items || items.length < 1) throw new Error('Nothing To Upload!');
 
+  console.log(items);
   itemsToUpload = items;
 })
 .then(() => cleanRemote())
@@ -24,18 +31,46 @@ sftp.connect({
   sftp.end();
   console.error(err);
   process.exit(1);
+  console.log("SFTP Connection Ended");
 });
 
 function scanLocalFiles() {
-  return[];
+  let localPublicDir = upath.join(process.cwd(), 'public');
+  console.log(localPublicDir);
+
+  return glob(`${localPublicDir}/**/*`).then(globMatches => {
+    let items = globMatches.map(path => {
+      return {
+        isDirectory: fs.lstatSync(path).isDirectory(),
+        localPath: path
+      }
+    });
+    console.log(items);
+    return items;
+  })
 }
 
 function cleanRemote() {
   console.log('\nCleaned Remote Server');
+
+  return sftp.list(remotePathBase)
+    .then(objectList => {
+      objectList = objectList.filter(obj => !ignoredRemoteItems.has(obj.name));
+
+      let directoriesToRemove = objectList
+      .filter(obj => obj.type === 'd')
+      .map(obj => obj.name);
+
+      let operations = directoriesToRemove.map(dir => sftp.rmdir(upath.join(remotePathBase, dir), true)
+    .then(() => console.log(`Removed directory $(dir)`)))
+    .concat(filesToRemove.map(file =>
+      sftp.delete(upath.join(remotePathBase, file))
+    ))
+    })
 }
 
 function createDirectoriesFor(items) {
-  console.log("Creating directories");
+  console.log("Creating directories");``
 }
 
 function uploadFiles(items) {
