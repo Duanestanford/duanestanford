@@ -1,0 +1,25 @@
+{
+  "name": "duanestanford",
+  "version": "1.0.0",
+  "description": "",
+  "main": "deploy.js",
+  "scripts": {
+    "deploy": "node deploy.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Duanestanford/duanestanford.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Duanestanford/duanestanford/issues"
+  },
+  "homepage": "https://github.com/Duanestanford/duanestanford#readme",
+  "dependencies": {
+    "glob": "^7.1.6",
+    "ssh2-sftp-client": "^5.0.1",
+    "upath": "^1.2.0"
+  }
+}
