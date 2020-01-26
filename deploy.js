@@ -86,8 +86,11 @@ function createDirectoriesFor(items) {
 
   console.log(" \'Directories to Create\' is defined as: " + directoriesToCreate);
 
-  return Promise.all(directoriesToCreate.map(dir => sftp.mkdir(dir.remotePath, true)
+  return Promise.all(directoriesToCreate.map(dir => sftp.mkdir(dir.remotePath)
 .then(() => console.log(`Created Directory ${dir.remotePath}`))));
+
+
+
 }
 
 
