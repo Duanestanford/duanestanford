@@ -6,7 +6,7 @@ const glob = util.promisify(require('glob'));
 const upath = require('upath');
 const fs = require('fs');
 
-const remotePathBase = "/home/ofbagvxe/public_html";
+const remotePathBase = "/home/ofbagvxe/public_html/duanestanford.com";
 const ignoredRemoteItems = new Set(['.well-known', 'cgi-bin', '.htaccess', 'favicon.ico']);
 
 
